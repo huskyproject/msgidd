@@ -33,7 +33,7 @@ void writeToFile()
   if (f != NULL)
     {
       printf("Writing msgId File\n");
-      fprintf(f, "%08lX", msgid);
+      fprintf(f, "%ld", msgid);
       fclose(f);
     }
   else
