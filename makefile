@@ -20,7 +20,10 @@ msgidd: msgidd.o sockutil.o
 msgidclient: msgidclient.o sockutil.o
 	$(CC) -o msgidclient msgidclient.o sockutil.o
 
-all: msgidd msgidclient 
+MsgIdClient.class: MsgIdClient.java
+	javac MsgIdClient.java
+
+all: msgidd msgidclient MsgIdClient.class
 
 run: msgidd 
 	./msgidd
