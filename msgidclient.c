@@ -14,12 +14,40 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <time.h>
+#include <sys/time.h>
 
 #include "sockutil.h"          /* some utility functions */
 
+time_t last_time;
+
 void createMsgId(char *msgId)
 {
-  memset(msgId, '0', 8);
+    const unsigned long mask = 0xfffffffUL; // 28 lower bits (?)
+    
+    static unsigned long    counter = 0;
+    time_t            curr_time = time (NULL);
+
+    unsigned long ret;
+    
+    struct timeval        time_val;
+    struct timezone        tz;
+    
+    if (curr_time != last_time) {
+        last_time = curr_time;
+        counter   = 0;
+        ret = curr_time & mask;
+    } else {
+        if (++counter == 16) {
+            gettimeofday (&time_val, &tz);
+            usleep (1000000 - time_val.tv_usec);
+            counter = 0;
+            curr_time = time (NULL);
+        }
+        ret =  (counter++ << 28) | (curr_time & mask);
+    }
+
+    sprintf(msgId, "%08lX", ret);
 }
 
 int getMsgId(char *hostName, char *msgId)
@@ -72,18 +100,29 @@ int getMsgId(char *hostName, char *msgId)
     return rc;
 }
 
+void init()
+{
+    last_time = time(NULL);
+}
+
 int main(int argc, char ** argv) {
   int rc;
   char msgId[9];
+  int i;
 
   if (argc != 2) {
     fprintf(stderr, "only a single argument is supported\n");
     return 1;
   }
-  
-  rc = getMsgId(argv[1], msgId);
-  printf("Got msgId: %s\n", msgId);
-  printf("rc:        %d\n", rc);
+
+  init();
+
+  for (i = 0; i < 20 ; i++) 
+      {
+	  rc = getMsgId(argv[1], msgId);
+	  printf("Got msgId: %s\n", msgId);
+	  printf("rc:        %d\n", rc);
+      }
   
   return rc;
 }
