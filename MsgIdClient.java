@@ -3,7 +3,7 @@ import java.io.*;
 
 public class MsgIdClient {
 
-    public static String getMsgId()
+    public static String getMsgId(String hostName)
     {
 	String temp = null;
 	Socket socket;
@@ -11,7 +11,7 @@ public class MsgIdClient {
 	OutputStreamWriter out = null;
 
 	try {
-	    socket = new Socket(InetAddress.getByName("192.168.1.1"), 16890);
+	    socket = new Socket(InetAddress.getByName(hostName), 16890);
 	    in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	    out = new OutputStreamWriter(socket.getOutputStream());
 	
@@ -34,9 +34,15 @@ public class MsgIdClient {
 	MsgIdClient client = new MsgIdClient();
 	int i;
 
-	for (i = 0; i < 10 ; i++)
-	    System.out.println("MsgId #" + i + ": " + client.getMsgId());
+	if (argv.length != 1)
+	    {
+		System.out.println("Usage:");
+		System.out.println("     java MsgIdClient <host>");
+		System.exit(1);
+	    }
 
+	for (i = 0; i < 10 ; i++)
+	    System.out.println("MsgId #" + i + ": " + client.getMsgId(argv[0]));
     }
 
 }

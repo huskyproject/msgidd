@@ -29,8 +29,10 @@ run: msgidd
 	./msgidd
 
 clean:
-	rm *.o
-	rm *~
+	-rm *.o
+	-rm *~
 
 distclean: clean
-	rm msgidd
+	-rm msgidd
+	-rm msgidclient
+	-rm MsgIdClient.class
