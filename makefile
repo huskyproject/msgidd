@@ -10,6 +10,7 @@ else
   LFLAGS  = -L$(LIBDIR)
 endif
 
+default: all
 
 %.o: %.c
 	$(CC) $(CFLAGS) $*.c
