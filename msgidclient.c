@@ -117,7 +117,7 @@ int main(int argc, char ** argv) {
 
   init();
 
-  for (i = 0; i < 20 ; i++) 
+  for (i = 0; i < 1 ; i++) 
       {
 	  rc = getMsgId(argv[1], msgId);
 	  printf("Got msgId: %s\n", msgId);
