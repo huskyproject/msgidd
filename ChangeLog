@@ -1,0 +1,7 @@
+msgidd 0.1
+------------
+
+----- cvs ci ------
+Wed Oct 27 19:06:46 CEST 1999
+mtt:
+* added host parameter to java client
