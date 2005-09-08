@@ -2,11 +2,28 @@ Msgidd - a Message ID daemon.
 
 This is a part of the HUSKY portable fidonet software project.
 
+
+I. Introduction.
+
+
+A Msgidd package provides independent support for the generation of the MSGID
+for any FTN software. Message ID daemon listens a TCP port 16890 and generate
+new MSGID number for each request. Daemon also store last generated MSGID
+number into disk file to prevent drops of MSGID sequence if daemon is aborted.
+
+
+II. Package contents.
+
+
 The Msgidd package contains:
 - msgidd
 - msgidclient
 - MsgIdClient.class
 - README
+
+
+III. Package components descriptions.
+
 
 1. msgidd
 
@@ -57,5 +74,6 @@ Internal MSGID generator isn't implemented.
 4. README
 
 This file.
+
 
 $Id$
