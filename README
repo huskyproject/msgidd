@@ -11,6 +11,8 @@ for any FTN software. Message ID daemon listens a TCP port 16890 and generate
 new MSGID number for each request. Daemon also store last generated MSGID
 number into disk file to prevent drops of MSGID sequence if daemon is aborted.
 
+Msgidd is tested on GNU/Linux, FreeBSD and Windows.
+
 
 II. Package contents.
 
@@ -74,6 +76,20 @@ Internal MSGID generator isn't implemented.
 4. README
 
 This file.
+
+
+IV. Build from sources.
+
+
+To compile programs the GNU C compiler package is needed. This compiler is
+included into base FreeBSD distribution and into many Linux distributions.
+For compile on Windows a Cygwin or MINGW32+MSYS is needed.
+
+To compile programs please run these commands from your shell:
+
+cd <to directory with unpacked sources>
+make
+
 
 
 $Id$
