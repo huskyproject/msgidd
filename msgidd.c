@@ -19,8 +19,12 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <process.h>
 
 #include "sockutil.h"          /* some utility functions */
+
+
+#define MSGID_STORE_FILE "msgid"  /* disk file to store last generated MSGID value */
 
 volatile int terminate = 0;
 static unsigned long msgid = 12122323;
@@ -34,10 +38,10 @@ void writeToFile()
 {
   FILE *f;
 
-  f = fopen("msgid", "w");
+  f = fopen(MSGID_STORE_FILE, "w");
   if (f != NULL)
     {
-      printf("Writing msgId File\n");
+      printf("Writing msgId File \"%s\"\n", MSGID_STORE_FILE);
       fprintf(f, "%ld", msgid);
       fclose(f);
     }
@@ -52,7 +56,7 @@ void loadFromFile()
    FILE *f;
    char buf[9];
 
-   f = fopen("msgid", "r");
+   f = fopen(MSGID_STORE_FILE, "r");
    if (f != NULL)
      {
        printf("Reading msgId File\n");
@@ -86,7 +90,7 @@ int main(void) {
     size_t addrLength = sizeof(struct sockaddr_in);
     char inBuf[12], outBuf[9];
 
-    printf("Husky MsgId Server 0.1\n");
+    printf("Husky MsgId Server v.0.1\n");
 
     loadFromFile();
 
@@ -125,6 +129,7 @@ int main(void) {
 	{
 	  sprintf(outBuf, "%08lX", msgid++);
 	  printf("Generated msgid: %s\n", outBuf);
+	  writeToFile();
 	  write(conn, outBuf, strlen(outBuf));
 	}
       else {
@@ -134,8 +139,6 @@ int main(void) {
       printf("---- done\n");
       close(conn);
     }
-
-    writeToFile();
 
     close(sock);
     return 0;

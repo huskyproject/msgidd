@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include <time.h>
 #include <sys/time.h>
+#include <process.h>
+#include <string.h>
 
 #include "sockutil.h"          /* some utility functions */
 
