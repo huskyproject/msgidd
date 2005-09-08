@@ -1,0 +1,59 @@
+Msgidd - a Message ID daemon.
+
+This is a part of the HUSKY portable fidonet software project.
+
+The Msgidd package contains:
+- msgidd
+- msgidclient
+- MsgIdClient.class
+- README
+
+1. msgidd
+
+This is a simple msgid server. It is based on the tserver code from the
+book "Linux Application Development".
+
+Msgidd waits for a connection on port 16890/TCP. Once a connection has been
+established, get commands and return appropriate return message, and then
+wait for another connection to the socket.
+
+To informational purposes please add following line into /etc/services:
+
+msgid		16890/tcp	# husky MSGID daemon
+
+After this you may get the new MSGID using command:
+
+telnet localhost msgid
+(put string "getMsgId")
+(read generated MSGID)
+
+
+2. msgidclient
+
+This is a simple msgidd client. It is based on the tclient code from the
+book "Linux Application Development".
+
+Msgidclient connects to the server whose hostname or IP address is given as
+an command line argument, at port 16980/TCP (msgidd port). Once connected,
+write a string "getMsgId" to the socket, read the data from socket and
+print this data to stdout until server closes a connection. If connection
+can't be established then Msgidclient generates MSGID using internally
+implemented algorithm.
+
+
+3. MsgIdClient.class
+
+This is a JAVA msgidd client.
+
+MsgIdClient.class connects to the server whose hostname or IP address is
+given as an command line argument, at port 16980/TCP (msgidd port). Once
+connected, write a string "getMsgId" to the socket, read the data from
+socket and print this data to stdout until server closes a connection.
+Internal MSGID generator isn't implemented.
+
+
+4. README
+
+This file.
+
+$Id$

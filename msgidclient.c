@@ -1,12 +1,14 @@
-/* simple msgid client for unix enviroments 
-   it is based on the tserver code from the book
-   Linux Application Developmend */
+/* msgidclient.c - a main file of the
+   simple msgid client for unix enviroments.
+   It is based on the tclient code from the book
+   "Linux Application Development" */
 
-/* tclient.c - simple client for TCP/IP sockets */
+/* Msgidclient connects to the server whose hostname or IP address is given as
+   an command line argument, at port 16980/TCP (msgidd port). Once connected,
+   write a string "getMsgId" to the socket, read the data from socket and print
+   this data to stdout until server closes a connection. */
 
-/* Connect to the server whose hostname or IP is given as an
-   argument, at port 16980. Once connected, copy everything on
-   stdin to the socket, then exit. */
+/* $Id$ */
 
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -24,15 +26,15 @@ time_t last_time;
 void createMsgId(char *msgId)
 {
     const unsigned long mask = 0xfffffffUL; // 28 lower bits (?)
-    
+
     static unsigned long    counter = 0;
     time_t            curr_time = time (NULL);
 
     unsigned long ret;
-    
+
     struct timeval        time_val;
     struct timezone        tz;
-    
+
     if (curr_time != last_time) {
         last_time = curr_time;
         counter   = 0;
@@ -62,7 +64,7 @@ int getMsgId(char *hostName, char *msgId)
     /* If the argument can be converted to an IP, do so. If not, try
        to look it up in DNS. */
     if (inet_aton(hostName, &inaddr))
-        host = gethostbyaddr((char *) &inaddr, sizeof(inaddr), 
+        host = gethostbyaddr((char *) &inaddr, sizeof(inaddr),
                                AF_INET);
     else
         host = gethostbyname(hostName);
@@ -96,7 +98,7 @@ int getMsgId(char *hostName, char *msgId)
       close(sock);
       rc = 0;
     }
-    
+
     return rc;
 }
 
@@ -117,12 +119,12 @@ int main(int argc, char ** argv) {
 
   init();
 
-  for (i = 0; i < 1 ; i++) 
+  for (i = 0; i < 1 ; i++)
       {
 	  rc = getMsgId(argv[1], msgId);
 	  printf("Got msgId: %s\n", msgId);
 	  printf("rc:        %d\n", rc);
       }
-  
+
   return rc;
 }

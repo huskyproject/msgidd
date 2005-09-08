@@ -1,10 +1,15 @@
-/* simple msgid server for unix enviroments 
+/* simple MSGID server for unix enviroments
    it is based on the tserver code from the book
-   Linux Application Developmend */
+   "Linux Application Developmend" */
 
 /* Waits for a connection on port husky = 16890. Once a connection has been
-   established, get commands and return appropriate return message, and then wait for another connection to 
-   the socket. */
+   established, get commands and return appropriate return message, and then
+   wait for another connection to the socket.
+   Last generated MSGID is stored into disk file "msgid" and daemon reads it
+   at start time.
+ */
+
+/* $Id$ */
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -46,7 +51,7 @@ void loadFromFile()
 {
    FILE *f;
    char buf[9];
-   
+
    f = fopen("msgid", "r");
    if (f != NULL)
      {
@@ -65,11 +70,11 @@ void loadFromFile()
 void installSignalHandlers()
 {
   struct sigaction sa;
-  
+
   memset(&sa, 0, sizeof(sa));
   sa.sa_handler = termHandler;
   if (sigaction(SIGTERM, &sa, NULL)) perror("sigaction");
-  
+
   memset(&sa, 0, sizeof(sa));
   sa.sa_handler = termHandler;
   if (sigaction(SIGINT, &sa, NULL)) perror("sigaction");
@@ -92,7 +97,7 @@ int main(void) {
        twice in a row, without waiting for the (ip, port) tuple
        to time out. */
     i = 1;					
-    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &i, sizeof(i)); 
+    setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &i, sizeof(i));
 
     address.sin_family = AF_INET;
     address.sin_port = htons(16890);
@@ -106,9 +111,9 @@ int main(void) {
 
     installSignalHandlers();
 
-    while ((conn = accept(sock, (struct sockaddr *) &address, 
+    while ((conn = accept(sock, (struct sockaddr *) &address,
                           &addrLength)) >= 0) {
-      
+
       if (terminate == 1) break;
 
       memset(&inBuf, 0, sizeof(inBuf));
@@ -116,7 +121,7 @@ int main(void) {
       rc = read(conn, &inBuf, sizeof(inBuf));
       //printf("%u : %s\n", rc, inBuf);
       //for (i=0; i < rc; i++) printf("%d\n", inBuf[i]);
-      if (strncmp(inBuf, "getMsgId", 8)==0) 
+      if (strncmp(inBuf, "getMsgId", 8)==0)
 	{
 	  sprintf(outBuf, "%08lX", msgid++);
 	  printf("Generated msgid: %s\n", outBuf);
