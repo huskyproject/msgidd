@@ -15,23 +15,24 @@ default: all
 %.o: %.c
 	$(CC) $(CFLAGS) $*.c
 
-msgidd: msgidd.o sockutil.o 
-	$(CC) -o msgidd msgidd.o sockutil.o
+msgidd: msgidd.o sockutil.o msgid.o
+	$(CC) -o $@ $+
+#	$(CC) -o msgidd msgidd.o sockutil.o msgid.o
 
-msgidclient: msgidclient.o sockutil.o
-	$(CC) -o msgidclient msgidclient.o sockutil.o
+msgidclient: msgidclient.o sockutil.o msgid.o
+	$(CC) -o $@ $+
+#	$(CC) -o msgidclient msgidclient.o sockutil.o msgid.o
 
 MsgIdClient.class: MsgIdClient.java
 	javac MsgIdClient.java
 
 all: msgidd msgidclient MsgIdClient.class
 
-run: msgidd 
+run: msgidd
 	./msgidd
 
 clean:
 	-rm *.o
-	-rm *~
 
 distclean: clean
 	-rm msgidd

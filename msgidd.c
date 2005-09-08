@@ -20,8 +20,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <process.h>
+#include <errno.h>
 
 #include "sockutil.h"          /* some utility functions */
+#include "msgid.h"             /* createMsgId() */
+
 
 #define VERSION "0.2"             /* Daemon version */
 #define MSGID_STORE_FILE "msgid"  /* disk file to store last generated MSGID value */
@@ -47,7 +50,7 @@ void writeToFile()
     }
   else
     {
-      printf("Error writing msgId File\n");
+      printf("Can't write msgId File: %s\n", strerror(errno));
     }
 }
 
@@ -67,8 +70,10 @@ void loadFromFile()
      }
    else
      {
-       printf("Error loading msgId File\n");
+       printf("Can't load msgId from file, generate new.\n");
      }
+   if(msgid==0) msgid = createMsgId();
+   printf("Starting with msgid: %08lX\n", msgid);
 }
 
 void installSignalHandlers()
