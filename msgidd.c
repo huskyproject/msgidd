@@ -23,7 +23,7 @@
 
 #include "sockutil.h"          /* some utility functions */
 
-
+#define VERSION "0.2"             /* Daemon version */
 #define MSGID_STORE_FILE "msgid"  /* disk file to store last generated MSGID value */
 
 volatile int terminate = 0;
@@ -90,7 +90,7 @@ int main(void) {
     size_t addrLength = sizeof(struct sockaddr_in);
     char inBuf[12], outBuf[9];
 
-    printf("Husky MsgId Server v.0.1\n");
+    printf("Husky MsgId Server v.%s\n",VERSION);
 
     loadFromFile();
 
