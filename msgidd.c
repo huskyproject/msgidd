@@ -30,7 +30,7 @@
 #define MSGID_STORE_FILE "msgid"  /* disk file to store last generated MSGID value */
 
 volatile int terminate = 0;
-static unsigned long msgid = 12122323;
+static unsigned long msgid = 0;
 
 void termHandler(int signum)
 {
@@ -45,7 +45,7 @@ void writeToFile()
   if (f != NULL)
     {
       printf("Writing msgId File \"%s\"\n", MSGID_STORE_FILE);
-      fprintf(f, "%ld", msgid);
+      fprintf(f, "%lu", msgid);
       fclose(f);
     }
   else
@@ -62,10 +62,10 @@ void loadFromFile()
    f = fopen(MSGID_STORE_FILE, "r");
    if (f != NULL)
      {
-       printf("Reading msgId File\n");
+       buf[0]=0;
+       printf("Reading msgId File..\n");
        fgets(buf, 9, f);
-       msgid = strtoul(buf, NULL, 16);
-       printf("Starting with msgid: %08lX\n", msgid);
+       msgid = strtoul(buf, NULL, 10);
        fclose(f);
      }
    else
@@ -127,12 +127,12 @@ int main(void) {
 
       memset(&inBuf, 0, sizeof(inBuf));
       printf("---- getting data\n");
-      rc = read(conn, &inBuf, sizeof(inBuf));
+      rc = read(conn, &inBuf, sizeof(inBuf)-1);
       //printf("%u : %s\n", rc, inBuf);
       //for (i=0; i < rc; i++) printf("%d\n", inBuf[i]);
       if (strncmp(inBuf, "getMsgId", 8)==0)
 	{
-	  sprintf(outBuf, "%08lX", msgid++);
+	  sprintf(outBuf, "%08lX", (msgid++)&0xffffffff);
 	  printf("Generated msgid: %s\n", outBuf);
 	  writeToFile();
 	  write(conn, outBuf, strlen(outBuf));

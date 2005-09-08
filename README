@@ -17,6 +17,8 @@ Msgidd waits for a connection on port 16890/TCP. Once a connection has been
 established, get commands and return appropriate return message, and then
 wait for another connection to the socket.
 
+Now Msgidd recognizes only command "getMsgId": generate and return new MSGID.
+
 To informational purposes please add following line into /etc/services:
 
 msgid		16890/tcp	# husky MSGID daemon
