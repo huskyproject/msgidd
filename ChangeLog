@@ -2,11 +2,25 @@ msgidd 0.2
 ------------
 
 ----------------------------
+2005/09/08 19:15:09;  author: stas_degteff;
+Fix decimal and hex numbers mix. Prevent buffer overflow
+----------------------------
+2005/09/08 19:01:03;  author: stas_degteff;
+generate msgid using current time if msgid file can't readed
+----------------------------
+2005/09/08 18:18:50;  author: stas_degteff;
+Change version number of the MSGID daemon to 0.2.
+----------------------------
 2005/09/08 18:07:28;  author: stas_degteff;
 Now msgidd store MSGID after each generation. Also compiler warnings is fixed.
 ----------------------------
 2005/09/08 17:55:34;  author: stas_degteff;
 Documents a MSGID daemon and clients. (Create a README.)
+----------------------------
+
+msgidd 0.1
+------------
+
 ----------------------------
 2000/09/13 18:28:26;  author: sms;
 renamed makefile to Makefile
