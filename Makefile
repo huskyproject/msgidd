@@ -17,14 +17,12 @@ default: all
 
 msgidd: msgidd.o sockutil.o msgid.o
 	$(CC) -o $@ $+
-#	$(CC) -o msgidd msgidd.o sockutil.o msgid.o
 
 msgidclient: msgidclient.o sockutil.o msgid.o
 	$(CC) -o $@ $+
-#	$(CC) -o msgidclient msgidclient.o sockutil.o msgid.o
 
 MsgIdClient.class: MsgIdClient.java
-	javac MsgIdClient.java
+	javac $+
 
 all: msgidd msgidclient MsgIdClient.class
 
